@@ -12,6 +12,18 @@ class App:
         self._wlan = WLAN(STA_IF)
         self._wlan.active(True)
 
+    def shutdown(self):
+        self.disconnect_wifi()
+        LOG_INFO("Sistema encerrado!")
+
+    def disconnect_wifi(self):
+        try:
+            self._wlan.disconnect()
+            self._wlan.active(False)
+            LOG_INFO("Desconectado do WiFi!")
+        except Exception as e:
+            LOG_ERROR(f"Erro ao desconectar do WiFi: {e}")
+
     def initialize_logger(self):
         Logger.level = LOG_LEVEL[CONFIG_LOG_LEVEL]
         Logger.console = CONFIG_LOG_CONSOLE

@@ -2,10 +2,11 @@ from utime import sleep
 from logger import LOG_INFO, LOG_ERROR
 from app import App
 
+app = App()
+
 
 def loop():
     try:
-        app = App()
         app.initialize_logger()
         app.connect_wifi()
         app.sync_time()
@@ -23,4 +24,4 @@ if __name__ == "__main__":
     except:
         pass
     finally:
-        LOG_INFO("Sistema encerrado!")
+        app.shutdown()
