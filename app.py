@@ -23,7 +23,11 @@ class App:
             LOG_INFO("Conectado ao WiFi!")
             return
         self._wlan.connect(CONFIG_WIFI_SSID, CONFIG_WIFI_PASSWORD)
+        retry = 0
         while not self._wlan.isconnected():
+            if retry > 20:
+                raise Exception("Não foi possível conectar ao WiFi!")
             LOG_INFO("Tentando conectar ao WiFi...")
             sleep(2)
+            retry += 1
         LOG_INFO("Conectado ao WiFi!")
