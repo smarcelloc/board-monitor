@@ -15,6 +15,7 @@ class App:
 
     def shutdown(self):
         self.disconnect_wifi()
+        self.disconnect_mqtt()
         LOG_INFO("Sistema encerrado!")
 
     def disconnect_wifi(self):
@@ -25,6 +26,15 @@ class App:
             LOG_INFO("Desconectado do WiFi!")
         except Exception as e:
             LOG_ERROR(f"Erro ao desconectar do WiFi: {e}")
+
+    def disconnect_mqtt(self):
+        if not self._mqtt:
+            return
+        try:
+            self._mqtt.disconnect()
+            LOG_INFO("Desconectado do MQTT!")
+        except Exception as e:
+            LOG_ERROR(f"Erro ao desconectar do MQTT: {e}")
 
     def initialize_logger(self):
         Logger.level = LOG_LEVEL[CONFIG_LOG_LEVEL]
