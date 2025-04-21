@@ -16,10 +16,14 @@ def app_start():
             sleep(10)
 
 
+def app_shutdown():
+    app.shutdown()
+
+
 if __name__ == "__main__":
     try:
         app_start()
     except:
         pass
     finally:
-        app.shutdown()
+        app_shutdown()
