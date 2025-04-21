@@ -11,9 +11,9 @@ def loop():
         app.connect_wifi()
         app.sync_time()
         app.connect_mqtt()
+        app.event_loop_run()
     except Exception as e:
         LOG_ERROR(e)
-    finally:
         LOG_INFO("Reiniciando o sistema em 10 segundos...")
         sleep(10)
 
