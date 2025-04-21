@@ -27,5 +27,10 @@ class MQTT:
         except Exception as e:
             return False
 
+    def reconnect(self):
+        if not self.is_connected():
+            self.connect()
+
     def publish(self, topic: str, message: str):
+        self.reconnect()
         self._client.publish(topic=topic, msg=message)
