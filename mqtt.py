@@ -17,7 +17,10 @@ class MQTT:
         self.__client.connect()
 
     def disconnect(self):
-        self.__client.disconnect()
+        try:
+            self.__client.disconnect()
+        except Exception as e:
+            pass
 
     def publish(self, topic: str, message: str):
         self.__client.publish(topic=topic, msg=message)
