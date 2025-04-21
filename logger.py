@@ -10,14 +10,13 @@ class Logger:
     console: bool = False
     path: str = "log.txt"
     max_size_kb: int = 10
-    thread_names = {}
 
     @staticmethod
     def log(level: str, message: str):
         try:
             if not LOG_LEVEL[level] >= Logger.level:
                 return
-            log_formatted = f"[{Logger._get_timestamp()}] [{level}] [Thread {Logger._get_thread_name()}]: {message}"
+            log_formatted = f"[{Logger._get_timestamp()}] [{level}]: {message}"
             if Logger.console:
                 print(log_formatted)
             if Logger.path:
@@ -29,16 +28,6 @@ class Logger:
     def _get_timestamp() -> str:
         now = localtime()
         return "{:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d}".format(*now[:6])
-
-    @staticmethod
-    def _get_thread_name() -> str:
-        thread_id = get_ident()
-        return Logger.thread_names.get(thread_id, "Desconhecido")
-
-    @staticmethod
-    def set_thread_name(name: str):
-        thread_id = get_ident()
-        Logger.thread_names[thread_id] = name
 
     @staticmethod
     def _write_log_to_file(log_message: str):

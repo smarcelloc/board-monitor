@@ -37,7 +37,6 @@ class App:
             LOG_ERROR(f"Erro ao desconectar do WiFi: {e}")
 
     def initialize_logger(self):
-        Logger.set_thread_name("Main")
         Logger.level = LOG_LEVEL[CONFIG_LOG_LEVEL]
         Logger.console = CONFIG_LOG_CONSOLE
         Logger.path = CONFIG_LOG_PATH
@@ -55,8 +54,11 @@ class App:
         LOG_DEBUG(f"MAC Address: {self._wifi.get_mac()}")
 
     def sync_time(self):
-        settime()
-        LOG_INFO("Hora sincronizada com o servidor NTP!")
+        try:
+            settime()
+            LOG_INFO("Horário sincronizado com o servidor NTP!")
+        except Exception as e:
+            raise Exception(f"Falhou em sincronizar o horário com servidor NTP: {e}")
 
     def connect_mqtt(self):
         try:
