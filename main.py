@@ -8,6 +8,7 @@ def loop():
         app = App()
         app.initialize_logger()
         app.connect_wifi()
+        app.sync_time()
     except Exception as e:
         LOG_ERROR(e)
     finally:

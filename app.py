@@ -3,6 +3,7 @@ from config import *
 from network import WLAN, STA_IF
 from utime import sleep
 from ujson import loads as json_load
+from ntptime import settime
 
 
 class App:
@@ -31,3 +32,7 @@ class App:
             sleep(2)
             retry += 1
         LOG_INFO("Conectado ao WiFi!")
+
+    def sync_time(self):
+        settime()
+        LOG_INFO("Hora sincronizada com o servidor NTP!")
