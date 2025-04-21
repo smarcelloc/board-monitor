@@ -107,6 +107,5 @@ class App:
             raise Exception(f"Erro ao inicializar o Event Loop: {e}")
 
     def _add_task_monitor(self):
-        monitor = Monitor(self._mqtt)
+        monitor = Monitor(mqtt=self._mqtt, board_mac=self._wifi.get_mac())
         self._event_loop.add_task("monitor", monitor.run())
-        self._event_loop.add_task("monitor1", monitor.run())
