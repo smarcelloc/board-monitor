@@ -4,6 +4,7 @@ from network import WLAN, STA_IF
 from utime import sleep
 from ujson import loads as json_load
 from ntptime import settime
+from mqtt import MQTT
 
 
 class App:
@@ -11,6 +12,7 @@ class App:
     def __init__(self):
         self._wlan = WLAN(STA_IF)
         self._wlan.active(True)
+        self._mqtt = None
 
     def shutdown(self):
         self.disconnect_wifi()
@@ -48,3 +50,17 @@ class App:
     def sync_time(self):
         settime()
         LOG_INFO("Hora sincronizada com o servidor NTP!")
+
+    def connect_mqtt(self):
+        try:
+            self._mqtt = MQTT(
+                client="...",
+                host=CONFIG_MQTT_HOST,
+                port=CONFIG_MQTT_PORT,
+                username=CONFIG_MQTT_USERNAME,
+                password=CONFIG_MQTT_PASSWORD,
+            )
+            self._mqtt.connect()
+            LOG_INFO("Conectado ao MQTT!")
+        except Exception as e:
+            raise Exception(f"Erro ao conectar ao MQTT: {e}")

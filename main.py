@@ -10,6 +10,7 @@ def loop():
         app.initialize_logger()
         app.connect_wifi()
         app.sync_time()
+        app.connect_mqtt()
     except Exception as e:
         LOG_ERROR(e)
     finally:
