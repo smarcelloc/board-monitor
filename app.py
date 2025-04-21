@@ -1,6 +1,6 @@
-from logger import Logger, LOG_INFO, LOG_ERROR, LOG_LEVEL
+from logger import Logger, LOG_INFO, LOG_ERROR, LOG_DEBUG, LOG_LEVEL
 from config import *
-from network import WLAN, STA_IF
+from wifi import WiFi
 from utime import sleep
 from ujson import loads as json_load
 from ntptime import settime
@@ -10,8 +10,7 @@ from mqtt import MQTT
 class App:
 
     def __init__(self):
-        self._wlan = WLAN(STA_IF)
-        self._wlan.active(True)
+        self._wifi = None
         self._mqtt = None
 
     def shutdown(self):
@@ -19,9 +18,10 @@ class App:
         LOG_INFO("Sistema encerrado!")
 
     def disconnect_wifi(self):
+        if not self._wifi:
+            return
         try:
-            self._wlan.disconnect()
-            self._wlan.active(False)
+            self._wifi.disconnect()
             LOG_INFO("Desconectado do WiFi!")
         except Exception as e:
             LOG_ERROR(f"Erro ao desconectar do WiFi: {e}")
@@ -34,18 +34,14 @@ class App:
         LOG_INFO("Sistema iniciado!")
 
     def connect_wifi(self):
-        if self._wlan.isconnected():
-            LOG_INFO("Conectado ao WiFi!")
-            return
-        self._wlan.connect(CONFIG_WIFI_SSID, CONFIG_WIFI_PASSWORD)
-        retry = 0
-        while not self._wlan.isconnected():
-            if retry > 20:
-                raise Exception("Não foi possível conectar ao WiFi!")
-            LOG_INFO("Tentando conectar ao WiFi...")
-            sleep(2)
-            retry += 1
+        self._wifi = WiFi(
+            ssid=CONFIG_WIFI_SSID,
+            password=CONFIG_WIFI_PASSWORD,
+        )
+        self._wifi.connect()
         LOG_INFO("Conectado ao WiFi!")
+        LOG_DEBUG(f"IP Address: {self._wifi.get_ip()}")
+        LOG_DEBUG(f"MAC Address: {self._wifi.get_mac()}")
 
     def sync_time(self):
         settime()
@@ -54,7 +50,7 @@ class App:
     def connect_mqtt(self):
         try:
             self._mqtt = MQTT(
-                client="...",
+                client=self._wifi.get_mac(),
                 host=CONFIG_MQTT_HOST,
                 port=CONFIG_MQTT_PORT,
                 username=CONFIG_MQTT_USERNAME,
