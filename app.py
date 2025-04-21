@@ -15,6 +15,13 @@ class App:
         self._mqtt = None
         self._event_loop = None
 
+    def start(self):
+        self.initialize_logger()
+        self.connect_wifi()
+        self.sync_time()
+        self.connect_mqtt()
+        self.event_loop_run()
+
     def shutdown(self):
         LOG_INFO("Solicitado o encerramento do sistema")
         self.event_loop_stop()

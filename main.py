@@ -5,23 +5,20 @@ from app import App
 app = App()
 
 
-def loop():
-    try:
-        app.initialize_logger()
-        app.connect_wifi()
-        app.sync_time()
-        app.connect_mqtt()
-        app.event_loop_run()
-    except Exception as e:
-        LOG_ERROR(e)
-        LOG_INFO("Reiniciando o sistema em 10 segundos...")
-        sleep(10)
+def app_start():
+    while True:
+        try:
+            app.start()
+            return
+        except Exception as e:
+            LOG_ERROR(e)
+            LOG_INFO("Reiniciando o sistema em 10 segundos...")
+            sleep(10)
 
 
 if __name__ == "__main__":
     try:
-        while True:
-            loop()
+        app_start()
     except:
         pass
     finally:
