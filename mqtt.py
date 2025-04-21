@@ -5,7 +5,7 @@ from utime import time
 class MQTT:
 
     def __init__(self, client: str, host: str, port: int, username: str, password: str):
-        self.__client = MQTTClient(
+        self._client = MQTTClient(
             client_id=client,
             server=host,
             port=port,
@@ -14,18 +14,18 @@ class MQTT:
         )
 
     def connect(self):
-        self.__client.connect()
+        self._client.connect()
 
     def disconnect(self):
         if self.is_connected():
-            self.__client.disconnect()
+            self._client.disconnect()
 
     def is_connected(self) -> bool:
         try:
-            self.__client.ping()
+            self._client.ping()
             return True
         except Exception as e:
             return False
 
     def publish(self, topic: str, message: str):
-        self.__client.publish(topic=topic, msg=message)
+        self._client.publish(topic=topic, msg=message)
