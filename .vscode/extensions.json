@@ -3,6 +3,9 @@
         "ms-python.python",
         "visualstudioexptteam.vscodeintellicode",
         "ms-python.vscode-pylance",
-        "paulober.pico-w-go"
+        "paulober.pico-w-go",
+        "EditorConfig.EditorConfig",
+        "ms-python.black-formatter",
+        "ms-python.pylint"
     ]
 }
