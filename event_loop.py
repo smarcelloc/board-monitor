@@ -19,7 +19,10 @@ class EventLoop:
     def cancel_task(self, name: str):
         if not self._running and name not in self._tasks:
             return
-        self._tasks[name].cancel()
+        task = self._tasks[name]
+        if asyncio.current_task() == task:
+            return
+        task.cancel()
         self._tasks.pop(name)
 
     def run(self):
@@ -29,6 +32,7 @@ class EventLoop:
     def stop(self):
         for name, _ in self._tasks.items():
             self.cancel_task(name)
+        self._tasks.clear()
         self._running = False
 
     async def _coroutine_run(self):
