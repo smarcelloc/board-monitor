@@ -101,7 +101,6 @@ class App:
         try:
             self._event_loop = EventLoop()
             self._event_loop.add_task("monitor", self._task_monitor())
-            self._event_loop.add_task("monitor02", self._task_monitor02())
             self._event_loop.run()
         except Exception as e:
             raise Exception(f"Erro ao inicializar o Event Loop: {e}")
@@ -109,9 +108,4 @@ class App:
     async def _task_monitor(self):
         while True:
             LOG_INFO("Publicando na fila: ....")
-            await EventLoop.sleep_ms(300)
-
-    async def _task_monitor02(self):
-        while True:
-            LOG_INFO("Publicando na fila 02: ....")
             await EventLoop.sleep_ms(300)
